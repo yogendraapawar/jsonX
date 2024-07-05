@@ -7,7 +7,7 @@ type CodeState = {
 };
 
 const initialState: CodeState = {
-  code:"//typr or paste here"
+  code:`{"tool":"jsonx", "creator":"yogendra"}`
 };
 
 export const codeSlice = createSlice({

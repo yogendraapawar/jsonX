@@ -1,32 +1,21 @@
-'use client';
-import React, {
-  MouseEventHandler,
-  isValidElement,
-  useEffect,
-  useState,
-} from 'react';
-import { AppDispatch, RootState } from '@/redux/store';
+"use client"
+import React, { MouseEventHandler, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/redux/store';
 import MonacoEditor from '../components/MonacoEditor';
-import { Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { findKeys } from '../helpers/findKeys';
-import { validateJson } from '../helpers/validateJson';
 import { resetKeyPaths, setKeyPaths } from '@/redux/features/keyPathSlice';
-import { stat } from 'fs';
 import PathList from '../components/PathList';
+import Split from '@uiw/react-split';
 
 function Page() {
   const code = useSelector((state: RootState) => state.codeReducer.code);
   const keyPaths = useSelector((state: RootState) => state.keyPathSlice.path);
-  console.log('from page', code);
   const dispatch = useDispatch<AppDispatch>();
   const [inputValue, setInputValue] = useState<string>('');
-  const [isJsonValid, setIsJsonValid] = useState<boolean>(false);
-  const handleInputChange = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
-    console.log(event.target.value);
   };
 
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (event) => {
@@ -35,53 +24,46 @@ function Page() {
   };
 
   return (
-    <div className="flex bg-yellow flex-1 h-full p-4">
-      {/* Left column */}
-      <div
-        className={`w-3/5 ${
-          isJsonValid
-            ? 'border-green-600 border-e-8'
-            : 'border-e-8 border-red-600'
-        } h-full`}
-      >
-        <MonacoEditor />
-      </div>
+    <div className="w-screen bg-yellow h-full p-4">
+      <Split>
+        {/* Left column */}
+        <div
+          className={`w-full ${
+            true ? 'border-green-600 border-e-8' : 'border-e-8 border-red-600'
+          } h-full`}
+        >
+          <MonacoEditor />
+        </div>
 
-      {/* Right column */}
-      <div className="w-2/5 border border-black flex flex-col h-full">
-        <div className='p-4'>
-          <FormControl>
-            <FormLabel>Enter a key to find</FormLabel>
+        {/* Right column */}
+        <div className="w-full border border-black flex flex-col h-full">
+          <div className="p-4">
+            <div className="text-sm mb-2">Enter a key to find</div>
             <div className="flex w-full justify-between gap-2">
-              <Input
-                width={'100%'}
-                placeholder="Basic usage"
+              <input
+                id="keyInput"
+                type="text"
+                className="w-full px-3 py-1 border-2 text-xs"
+                placeholder="search for a key..."
+                value={inputValue}
                 onChange={handleInputChange}
-                paddingY={5}
-                paddingX={10}
-                border={'2px'}
               />
-              <Button
-                isLoading={false}
-                loadingText="Loading"
-                colorScheme="teal"
-                variant="outline"
-                spinnerPlacement="end"
+
+              <button
+                className="px-3 py-1 bg-teal-500 text-white border border-teal-500 rounded-md hover:bg-teal-600 focus:outline-none"
                 onClick={handleButtonClick}
               >
                 Continue
-              </Button>
+              </button>
             </div>
-            <div>
-              Found {keyPaths.length} items
-            </div>
-          </FormControl>
-        </div>
+            <div className="text-xs mt-2">Found {keyPaths.length} items</div>
+          </div>
 
-        <div className="h-full p-4 overflow-y-auto">
-          <PathList />
+          <div className="h-full p-4 overflow-y-auto">
+            <PathList />
+          </div>
         </div>
-      </div>
+      </Split>
     </div>
   );
 }

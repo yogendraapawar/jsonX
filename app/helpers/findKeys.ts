@@ -1,34 +1,40 @@
+import { current } from "@reduxjs/toolkit";
+
 type Path = (string | number)[];
 
-function penetrateJson(data: any|string, target: string, path: Path = []): Path[] {
-    let result: Path[] = [];
 
-    if (typeof data === 'string' || typeof data === 'number') {
-        return data === target ? [path] : [];
+function penetrateJson(data: any | string, target: string, path: Path = []): Path[] {
+  let result: Path[] = [];
+
+  if (typeof data === 'string') {
+    try {
+      const parsedData = JSON.parse(data);
+      result = result.concat(penetrateJson(parsedData, target, path));
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
     }
-
-    if (typeof data === 'object') {
-        if (Array.isArray(data)) {
-            for (let index = 0; index < data.length; index++) {
-                let currentPath = [...path, index];
-                result = result.concat(penetrateJson(data[index], target, currentPath));
-            }
-        } else {
-            if (data !== null) {
-                Object.keys(data).forEach(key => {
-                    let currentPath = [...path, key];
-                    if (key === target) {
-                        result.push(currentPath);
-                    }
-                    result = result.concat(penetrateJson(data[key], target, currentPath));
-                });
-            }
+  } else if (typeof data === 'object' && data !== null) {
+    if (Array.isArray(data)) {
+      for (let index = 0; index < data.length; index++) {
+        let currentPath = [...path, index];
+        result = result.concat(penetrateJson(data[index], target, currentPath));
+      }
+    } else {
+      Object.keys(data).forEach(key => {
+        let currentPath = [...path, key];
+        if (key === target) {
+          result.push(currentPath);
         }
+        result = result.concat(penetrateJson(data[key], target, currentPath));
+      });
     }
-    
+  } else if (data === target) {
+    result.push(path);
+  }
 
-    return result;
+  return result;
 }
+
 
 function processResult(result:Path[]) {
     let final_list:Array<string>=[]

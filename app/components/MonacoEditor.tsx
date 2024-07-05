@@ -26,18 +26,18 @@ export default function MonacoEditor() {
   }
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full border border-black">
       <Editor
         height={'100%'}
         width={'100%'}
         value={code}
-        theme="vs-dark"
+        theme="vs"
         defaultLanguage="json"
         defaultValue="// some comment"
         beforeMount={handleEditorWillMount}
         onMount={handleEditorDidMount}
         onChange={handleOnChange}
-        options={{ minimap: { enabled: false }, formatOnPaste:true }}
+        options={{ minimap: { enabled: false }, formatOnPaste:true, padding:{top:40, bottom:20} }}
       />
     </div>
   );
