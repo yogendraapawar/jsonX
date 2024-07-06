@@ -23,6 +23,7 @@ function penetrateJson(data: any | string, target: string, path: Path = []): Pat
       Object.keys(data).forEach(key => {
         let currentPath = [...path, key];
         if (key === target) {
+          currentPath.push(data[key])
           result.push(currentPath);
         }
         result = result.concat(penetrateJson(data[key], target, currentPath));
@@ -44,12 +45,12 @@ function processResult(result:Path[]) {
         let path = '';
         let faced_integer = false;
 
-        for (let j = inner_arr.length - 1; j >= 0; j--) {
+        for (let j = inner_arr.length - 2; j >= 0; j--) {
             if (typeof inner_arr[j] === 'number') {
                 path = '[' + inner_arr[j] + '].' + path;
                 faced_integer = true;
             } else {
-                if (faced_integer || j === inner_arr.length - 1) {
+                if (faced_integer || j === inner_arr.length - 2) {
                     path = inner_arr[j] + path;
                     faced_integer = false;
                 } else {

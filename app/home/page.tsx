@@ -36,7 +36,7 @@ function Page() {
         </div>
 
         {/* Right column */}
-        <div className="w-full border border-black flex flex-col h-full">
+        <div className="w-full border border-black flex flex-col h-full p-2">
           <div className="p-4">
             <div className="text-sm mb-2">Enter a key to find</div>
             <div className="flex w-full justify-between gap-2">
