@@ -40,8 +40,12 @@ export const codeSlice = createSlice({
  
       },
       formatCode:(state,action)=>{
+        try{
         const formattedJsonString = JSON.stringify(JSON.parse(state.code), null, 2); // 2 spaces for indentation
         state.code=String(formattedJsonString)
+        }catch(error:any){
+          throw new Error(error.message)
+        }
 
       }      
     }
