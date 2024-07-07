@@ -12,6 +12,7 @@ import {
 } from '@/redux/features/inputJsonDetailsSlice';
 import PathList from '../components/PathList';
 import Split from '@uiw/react-split';
+import JsonFormatMenu from '../components/JsonFormatMenu';
 
 function Page() {
   const code = useSelector((state: RootState) => state.codeReducer.code);
@@ -43,13 +44,15 @@ function Page() {
       <Split>
         {/* Left column */}
         <div
-          className={`w-full h-full`}
+          className={`relative w-full h-full overflow-hidden`}
         >
+          <JsonFormatMenu/>
           <MonacoEditor />
+          
         </div>
 
         {/* Right column */}
-        <div className="w-full border flex flex-col h-full p-2">
+        <div className="w-full border flex flex-col h-full p-2 overflow-hidden">
           {/* <Menu/> */}
           <div className="p-4">
           <label
@@ -69,11 +72,6 @@ function Page() {
                     placeholder="key..."
                     onChange={handleInputChange}
                   />
-                  <div className="absolute inset-y-0 right-0 flex items-center">
-                    <label htmlFor="currency" className="sr-only">
-                      Currency
-                    </label>
-                  </div>
                 </div>
               </div>
 
@@ -84,7 +82,11 @@ function Page() {
                 Continue
               </button>
             </div>
+            <div className='flex justify-between'>
             <div className="text-xs mt-2">Found {paths.length} items</div>
+            <div className="text-xs mt-2">Double click on path to copy to clipboard</div>
+            </div>
+            
           </div>
 
           <div className="h-full p-4 overflow-y-auto">

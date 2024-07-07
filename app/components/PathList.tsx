@@ -64,14 +64,14 @@ function PathList() {
               onDoubleClick={(event) => handleDoubleClick(event, index)}
             >
               <div>{processResultSeperately(key)}</div>
-              <div>
+              {/* <div>
                 {typeof key[key.length - 1] === 'object' ? (
                   <span>{JSON.stringify(key[key.length - 1])}</span>
                 ) : (
                   //@ts-ignore
                   <span>{key[key.length - 1]}</span>
                 )}{' '}
-              </div>
+              </div> */}
             </li>
           ))}
         </ul>

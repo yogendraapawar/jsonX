@@ -43,7 +43,7 @@ export default function MonacoEditor() {
         beforeMount={handleEditorWillMount}
         onMount={handleEditorDidMount}
         onChange={handleOnChange}
-        options={{ minimap: { enabled: false }, formatOnPaste:true, padding:{top:40, bottom:20} }}
+        options={{ minimap: { enabled: false }, formatOnPaste:false, padding:{top:40, bottom:20} }}
       />
     </div>
   );
