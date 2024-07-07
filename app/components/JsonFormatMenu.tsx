@@ -3,6 +3,10 @@ import { hideToast, showToast } from '@/redux/features/toastSlice';
 import { AppDispatch } from '@/redux/store';
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import Image from 'next/image';
+import formatIcon from '@/public/icons/toolbarIcons/format.svg'
+import parseIcon from '@/public/icons/toolbarIcons/parse.svg'
+import stringifyIcon from '@/public/icons/toolbarIcons/stringify.svg'
 
 function JsonFormatMenu() {
 
@@ -22,14 +26,22 @@ function JsonFormatMenu() {
   }
 
   function handleFormatClick(): void {
-    dispatch(formatCode(null))
+    try{
+      dispatch(formatCode(null))
+    }catch(error:any){
+      dispatch(showToast(error.message));
+      setTimeout(() => {
+        dispatch(hideToast(null));
+      }, 1000);
+    }
     console.log("format clicked")
   }
 
   return (
-    <div className="flex w-full justify-end py-2 px-4 items-center">
-      <Button text="Parse" onclick={handleParseClick} />
-      <Button text="Format" onclick={handleFormatClick}/>
+    <div className="flex w-full justify-end py-2 px-4 gap-4 items-center">
+      <Button text="Parse" onclick={handleParseClick} icon={parseIcon}/>
+      <Button text="Format" onclick={handleFormatClick} icon={formatIcon}/>
+      <Button text="Stringify" onclick={handleFormatClick} icon={stringifyIcon}/>
     </div>
   );
 }
@@ -39,15 +51,18 @@ export default JsonFormatMenu;
 type ButtonProps = {
   text: string;
   onclick: () => void;
+  icon:any;
 };
 function Button(props: ButtonProps) {
   return (
-    <button
-      type="button"
-      className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-md text-xs px-2 py-1 me-2 mb-2 focus:outline-none"
+    <div
       onClick={props.onclick}
+      className='flex flex-col items-center cursor-pointer gap-1 '
     >
-      {props.text}
-    </button>
+      <div>
+      <Image src={props.icon} alt={"icon"} width={20}/>
+      </div>
+      <div className='text-xs font-semibold'>{props.text}</div>
+    </div>
   );
 }

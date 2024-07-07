@@ -21,6 +21,7 @@ function Page() {
   const [inputValue, setInputValue] = useState<string>('');
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    
     setInputValue(event.target.value);
   };
 
