@@ -1,11 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import codeReducer from "./features/codeSlice";
-import keyPathSlice from "./features/keyPathSlice";
+import inputJsonReducer from "./features/inputJsonDetailsSlice"
+import toastSlice from "./features/toastSlice";
+
 
 export const store = configureStore({
   reducer: {
     codeReducer,
-    keyPathSlice
+    inputJsonReducer,
+    toastSlice
   },
 });
 

@@ -1,16 +1,21 @@
-"use client"
+'use client';
 import React, { MouseEventHandler, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/redux/store';
 import MonacoEditor from '../components/MonacoEditor';
-import { findKeys } from '../helpers/findKeys';
-import { resetKeyPaths, setKeyPaths } from '@/redux/features/keyPathSlice';
+import { PathManager } from '../helpers/findKeys';
+import {
+  resetKeys,
+  resetPaths,
+  setKeys,
+  setPaths,
+} from '@/redux/features/inputJsonDetailsSlice';
 import PathList from '../components/PathList';
 import Split from '@uiw/react-split';
 
 function Page() {
   const code = useSelector((state: RootState) => state.codeReducer.code);
-  const keyPaths = useSelector((state: RootState) => state.keyPathSlice.path);
+  const paths = useSelector((state: RootState) => state.inputJsonReducer.paths);
   const dispatch = useDispatch<AppDispatch>();
   const [inputValue, setInputValue] = useState<string>('');
 
@@ -19,8 +24,18 @@ function Page() {
   };
 
   const handleButtonClick: MouseEventHandler<HTMLButtonElement> = (event) => {
-    dispatch(resetKeyPaths());
-    dispatch(setKeyPaths(findKeys(JSON.parse(code), inputValue)));
+    // Dispatch actions to reset paths and keys
+    dispatch(resetPaths());
+    dispatch(resetKeys());
+    const pathmanager = new PathManager();
+    pathmanager.clearKeys();
+    let result = pathmanager.penetrateJson(JSON.parse(code), inputValue);
+    console.log('finl_result', result);
+    // Dispatch actions to set final_paths and final_keys
+    dispatch(setPaths(result));
+    // dispatch(setKeys(Array.from(final_keys)));
+    // Log final_keys for debugging
+    // console.log("final_keys", final_keys);
   };
 
   return (
@@ -28,35 +43,48 @@ function Page() {
       <Split>
         {/* Left column */}
         <div
-          className={`w-full ${
-            true ? 'border-green-600 border-e-8' : 'border-e-8 border-red-600'
-          } h-full`}
+          className={`w-full h-full`}
         >
           <MonacoEditor />
         </div>
 
         {/* Right column */}
-        <div className="w-full border border-black flex flex-col h-full p-2">
+        <div className="w-full border flex flex-col h-full p-2">
+          {/* <Menu/> */}
           <div className="p-4">
-            <div className="text-sm mb-2">Enter a key to find</div>
+          <label
+                  htmlFor="price"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Search for the key
+                </label>
             <div className="flex w-full justify-between gap-2">
-              <input
-                id="keyInput"
-                type="text"
-                className="w-full px-3 py-1 border-2 text-xs"
-                placeholder="search for a key..."
-                value={inputValue}
-                onChange={handleInputChange}
-              />
+              <div className='w-full'>
+                <div className="mt-2 rounded-md shadow-sm">
+                  <input
+                    type="text"
+                    name="price"
+                    id="price"
+                    className="block w-full rounded-md border-0 py-1.5 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    placeholder="key..."
+                    onChange={handleInputChange}
+                  />
+                  <div className="absolute inset-y-0 right-0 flex items-center">
+                    <label htmlFor="currency" className="sr-only">
+                      Currency
+                    </label>
+                  </div>
+                </div>
+              </div>
 
               <button
-                className="px-3 py-1 bg-teal-500 text-white border border-teal-500 rounded-md hover:bg-teal-600 focus:outline-none"
+                className="px-3 py-1  mt-2 bg-teal-500 text-white border border-teal-500 rounded-md hover:bg-teal-600 focus:outline-none"
                 onClick={handleButtonClick}
               >
                 Continue
               </button>
             </div>
-            <div className="text-xs mt-2">Found {keyPaths.length} items</div>
+            <div className="text-xs mt-2">Found {paths.length} items</div>
           </div>
 
           <div className="h-full p-4 overflow-y-auto">

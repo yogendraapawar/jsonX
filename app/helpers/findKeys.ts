@@ -1,89 +1,99 @@
-import { current } from "@reduxjs/toolkit";
+type Path = (string | number|object)[];
 
-type Path = (string | number)[];
+export class PathManager {
 
+  
+  private final_keys: Set<string>;
 
-function penetrateJson(data: any | string, target: string, path: Path = []): Path[] {
-  let result: Path[] = [];
-
-  if (typeof data === 'string') {
-    try {
-      const parsedData = JSON.parse(data);
-      result = result.concat(penetrateJson(parsedData, target, path));
-    } catch (error) {
-      console.error('Error parsing JSON:', error);
-    }
-  } else if (typeof data === 'object' && data !== null) {
-    if (Array.isArray(data)) {
-      for (let index = 0; index < data.length; index++) {
-        let currentPath = [...path, index];
-        result = result.concat(penetrateJson(data[index], target, currentPath));
-      }
-    } else {
-      Object.keys(data).forEach(key => {
-        let currentPath = [...path, key];
-        if (key === target) {
-          currentPath.push(data[key])
-          result.push(currentPath);
-        }
-        result = result.concat(penetrateJson(data[key], target, currentPath));
-      });
-    }
-  } else if (data === target) {
-    result.push(path);
+  constructor(){
+    this.final_keys=new Set()
   }
 
-  return result;
-}
+  getKeys(): Set<string> {
+    return this.final_keys;
+  }
 
+  clearKeys() {
+    this.final_keys.clear();
+  }
 
-function processResult(result:Path[]) {
-    let final_list:Array<string>=[]
-    console.log("result is", result)
-    result.forEach(inner_arr=> {
-        console.log("inner ar",inner_arr)
-        let path = '';
-        let faced_integer = false;
+  penetrateJson(data: any | string, target: string, path: Path = []): Path[] {
+    let result: Path[] = [];
 
-        for (let j = inner_arr.length - 2; j >= 0; j--) {
-            if (typeof inner_arr[j] === 'number') {
-                path = '[' + inner_arr[j] + '].' + path;
-                faced_integer = true;
-            } else {
-                if (faced_integer || j === inner_arr.length - 2) {
-                    path = inner_arr[j] + path;
-                    faced_integer = false;
-                } else {
-                    path = inner_arr[j] + '.' + path;
-                    faced_integer = false;
-                }
-            }
+    if (typeof data === 'string') {
+      try {
+        const parsedData = JSON.parse(data);
+        result = result.concat(this.penetrateJson(parsedData, target, path));
+      } catch (error) {
+      }
+    } else if (typeof data === 'object' && data !== null) {
+      if (Array.isArray(data)) {
+        for (let index = 0; index < data.length; index++) {
+          let currentPath = [...path, index];
+          result = result.concat(this.penetrateJson(data[index], target, currentPath));
         }
-        path='$.'+path
-        final_list.push(path)
-        
-    });
-    console.log("final list length", final_list.length)
-    return final_list
+      } else {
+        Object.keys(data).forEach(key => {
+          let currentPath = [...path, key];
+          // Assuming keyManager is an instance of KeyManager
+          // this.final_keys.add(key);
+
+          if (key === target) {
+            currentPath.push(data[key]);
+            result.push(currentPath);
+          }
+          result = result.concat(this.penetrateJson(data[key], target, currentPath));
+        });
+      }
+    } else if (data === target) {
+      result.push(path);
+    }
+    return result;
+  }
+
+
+  fetchKeys(data: any | string, target: string) {
+    if (typeof data === 'string') {
+      try {
+        const parsedData = JSON.parse(data);
+        this.penetrateJson(parsedData, target)
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+      }
+    } else if (typeof data === 'object' && data !== null) {
+      if (Array.isArray(data)) {
+        for (let index = 0; index < data.length; index++) {
+          this.penetrateJson(data[index], target)
+        }
+      } else {
+        Object.keys(data).forEach(key => {
+          this.final_keys.add(key);
+          this.penetrateJson(data[key], target)
+        });
+      }
+    } 
+  }
 }
 
-// Example usage:
-const data = {
-    name: 'John',
-    age: 30,
-    address: {
-        city: 'New York',
-        zip: 10001,
-        coordinates: [40.7128, -74.0060]
-    },
-    hobbies: ['Reading', 'Music']
-};
 
+export function processResultSeperately(inner_arr: Array<string|number|object>) {
+  let path = '';
+  let faced_integer = false;
 
-
-export function findKeys(data:any, target:string, path:Path=[]):Path{
-    return processResult(penetrateJson(data, target, path))
+  for (let j = inner_arr.length - 2; j >= 0; j--) {
+    if (typeof inner_arr[j] === 'number') {
+      path = '[' + inner_arr[j] + '].' + path;
+      faced_integer = true;
+    } else {
+      if (faced_integer || j === inner_arr.length - 2) {
+        path = inner_arr[j] + path;
+        faced_integer = false;
+      } else {
+        path = inner_arr[j] + '.' + path;
+        faced_integer = false;
+      }
+    }
+  }
+  path = '$.' + path;
+  return path;
 }
-
-
-console.log( findKeys(data, "name"))
