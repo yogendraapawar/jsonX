@@ -39,7 +39,6 @@ export class PathManager {
           // this.final_keys.add(key);
 
           if (key === target) {
-            currentPath.push(data[key]);
             result.push(currentPath);
           }
           result = result.concat(this.penetrateJson(data[key], target, currentPath));
@@ -52,23 +51,49 @@ export class PathManager {
   }
 
 
-  fetchKeys(data: any | string, target: string) {
+  // fetchKeys(data: any | string, target: string) {
+
+  //   const penetrateJson = (obj: any, target: string) => {
+  //     if (typeof obj === 'object' && obj !== null) {
+  //       if (Array.isArray(obj)) {
+  //         obj.forEach((item) => penetrateJson(item, target));
+  //       } else {
+  //         Object.keys(obj).forEach((key) => {
+  //           this.final_keys.add(key);
+  //           penetrateJson(obj[key], target);
+  //         });
+  //       }
+  //     }
+  //   };
+  
+  //   if (typeof data === 'string') {
+  //     try {
+  //       const parsedData = JSON.parse(data);
+  //       penetrateJson(parsedData, target);
+  //     } catch (error) {
+  //       console.error('Error parsing JSON:', error);
+  //     }
+  //   } else if (typeof data === 'object' && data !== null) {
+  //     penetrateJson(data, target);
+  //   }
+  // }
+  fetchKeys(data: any | string): void {
+
     if (typeof data === 'string') {
       try {
         const parsedData = JSON.parse(data);
-        this.penetrateJson(parsedData, target)
+        this.fetchKeys(parsedData);
       } catch (error) {
-        console.error('Error parsing JSON:', error);
       }
     } else if (typeof data === 'object' && data !== null) {
       if (Array.isArray(data)) {
         for (let index = 0; index < data.length; index++) {
-          this.penetrateJson(data[index], target)
+          this.fetchKeys(data[index]);
         }
       } else {
         Object.keys(data).forEach(key => {
-          this.final_keys.add(key);
-          this.penetrateJson(data[key], target)
+          this.final_keys.add(key)
+          this.fetchKeys(data[key]);
         });
       }
     } 
@@ -80,12 +105,12 @@ export function processResultSeperately(inner_arr: Array<string|number|object>) 
   let path = '';
   let faced_integer = false;
 
-  for (let j = inner_arr.length - 2; j >= 0; j--) {
+  for (let j = inner_arr.length - 1; j >= 0; j--) {
     if (typeof inner_arr[j] === 'number') {
       path = '[' + inner_arr[j] + '].' + path;
       faced_integer = true;
     } else {
-      if (faced_integer || j === inner_arr.length - 2) {
+      if (faced_integer || j === inner_arr.length - 1) {
         path = inner_arr[j] + path;
         faced_integer = false;
       } else {
