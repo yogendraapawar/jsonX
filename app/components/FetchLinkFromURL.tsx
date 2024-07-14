@@ -22,6 +22,7 @@ function FetchLinkFromURL() {
         
         try {
             // Dispatch your async action here
+            // @ts-ignore
             await dispatch(fetchJsonFromURL(url));
         } catch (error) {
             console.error('Error fetching JSON:', error);
