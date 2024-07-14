@@ -4,6 +4,7 @@ import './globals.css';
 import ReduxProvider from '@/redux/ReduxProvider';
 import Header from './components/Header';
 import Toast  from './components/Toast';
+import LoadingPage from './components/LoadingPage';
 
 const inter = Roboto({weight:['400'], subsets:['latin'] });
 
