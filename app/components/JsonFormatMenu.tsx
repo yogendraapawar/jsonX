@@ -86,6 +86,7 @@ function JsonFormatMenu() {
             reader.readAsText(file);
             
         };
+        // @ts-ignore
         fileInput.addEventListener('change', onChange);
         fileInput.click(); // Simulate click to trigger file selection
 
