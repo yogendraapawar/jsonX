@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import codeReducer from "./features/codeSlice";
-import inputJsonReducer from "./features/inputJsonDetailsSlice"
 import toastSlice from "./features/toastSlice";
 import visibilityStatusSlice from "./features/visibilityStatusSlice";
 import otherVariables from "./features/otherVariables";
@@ -9,7 +8,6 @@ import otherVariables from "./features/otherVariables";
 export const store = configureStore({
   reducer: {
     codeReducer,
-    inputJsonReducer,
     toastSlice,
     visibilityStatusSlice,
     otherVariables
