@@ -1,18 +1,20 @@
+import Image from 'next/image';
 import { setSearchKeyValue } from '@/redux/features/codeSlice';
 import { AppDispatch, RootState } from '@/redux/store';
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import batteryIcon from '@/public/icons/toolbarIcons/batteryIcon.svg';
 
 function ComboBox() {
     const data = useSelector((state: RootState) => state.codeReducer.keys);
     const code = useSelector((state: RootState) => state.codeReducer.code);
-    const dispatch=useDispatch<AppDispatch>();
+    const dispatch = useDispatch<AppDispatch>();
     const [keySuggestion, setKeySuggestion] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [hideSuggestions, setHideSuggestions] = useState<boolean>(true);
     const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
-    const [mouseOverSuggestions, setMouseOverSuggestions] = useState<boolean>(false);
-
+    const [mouseOverSuggestions, setMouseOverSuggestions] =
+        useState<boolean>(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -24,13 +26,15 @@ function ComboBox() {
         return () => clearTimeout(timer);
     }, [mouseOverSuggestions]);
 
-    function handleAutoCompleteChange(event: ChangeEvent<HTMLInputElement>): void {
+    function handleAutoCompleteChange(
+        event: ChangeEvent<HTMLInputElement>
+    ): void {
         let searchInput = event.target.value.toLowerCase().trim();
 
         if (searchInput === '') {
             setKeySuggestion([]);
             setInputValue('');
-            dispatch(setSearchKeyValue(''))
+            dispatch(setSearchKeyValue(''));
             setHideSuggestions(true);
             return;
         }
@@ -49,14 +53,13 @@ function ComboBox() {
         }
 
         setInputValue(event.target.value);
-        dispatch(setSearchKeyValue(event.target.value))
+        dispatch(setSearchKeyValue(event.target.value));
     }
 
     function handleSuggestionClick(index: number) {
         setHideSuggestions(true);
         setInputValue(keySuggestion[index]);
-        dispatch(setSearchKeyValue(keySuggestion[index]))
-
+        dispatch(setSearchKeyValue(keySuggestion[index]));
     }
 
     function handleInputBlur() {
@@ -68,12 +71,17 @@ function ComboBox() {
     }
 
     return (
-        <div className="relative" data-hs-combo-box="">
-            <div className="relative">
+        <div data-hs-combo-box="">
+            <div className="relative input-box-shadow">
+                <div className="absolute left-0 bg-[#454547] h-full z-10 w-[10px] "></div>
+                <div className="absolute left-4 top-1 z-10">
+                    <Image src={batteryIcon} alt="" width={12} height={12} />
+                </div>
+                <div className="absolute right-0 bg-[#29292c] h-full z-10 w-[10px]"></div>
                 <input
-                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50"
+                    className="py-2 px-4 block w-full  h-[60px] text-base text-white disabled:opacity-50 bg-black input-inner-shadow"
                     type="text"
-                    id='keySearchInput'
+                    id="keySearchInput"
                     data-hs-combo-box-input=""
                     value={inputValue}
                     onChange={handleAutoCompleteChange}
@@ -83,26 +91,6 @@ function ComboBox() {
                         setIsInputFocused(true);
                     }}
                 />
-                <div
-                    className="absolute top-1/2 end-3 -translate-y-1/2"
-                    data-hs-combo-box-toggle=""
-                >
-                    <svg
-                        className="flex-shrink-0 size-3.5 text-gray-500"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    >
-                        <path d="m7 15 5 5 5-5"></path>
-                        <path d="m7 9 5-5 5 5"></path>
-                    </svg>
-                </div>
             </div>
             {!hideSuggestions && (
                 <div
@@ -114,7 +102,7 @@ function ComboBox() {
                         keySuggestion.map((value, index) => (
                             <div
                                 key={index}
-                                className="cursor-pointer py-2 px-4 w-full text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100"
+                                className="cursor-pointer py-2 px-4 w-full text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none "
                                 data-hs-combo-box-output-item=""
                                 onClick={() => handleSuggestionClick(index)}
                             >

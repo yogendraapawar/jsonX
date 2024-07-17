@@ -23,20 +23,20 @@ import LoadingPage from '../components/LoadingPage';
 function Page() {
 
     return (
-        <div className="relative w-screen bg-yellow h-full p-4">
+        <div className="relative w-screen bg-yellow h-full p-4 ">
             <LoadingPage/>
             <Split>
                 {/* Left column */}
-                <div className={`relative w-[60%] h-full overflow-hidden`}>
+                <div className={`flex flex-col w-[70%] h-full overflow-hidden`}>
                     <MonacoEditor />
                 </div>
 
                 {/* Right column */}
-                <div className='h-full w-[40%]'>
+                <div className='h-full w-[30%]'>
                 <Split mode="vertical">
-                    <div className="w-full border flex flex-col h-full p-2 overflow-hidden">
+                    <div className="w-full border flex flex-col h-full overflow-hidden">
                         <SearchKey/>
-                        <div className="h-full p-4 overflow-auto">
+                        <div className="h-full pb-4 overflow-auto bg-[#b6b4b2]">
                             <PathList />
                         </div>
                     </div>

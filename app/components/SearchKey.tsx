@@ -13,65 +13,70 @@ function SearchKey() {
         (state: RootState) => state.visibilityStatusSlice.loadingSearchingPaths
     );
     const [buttonLoading, setButtonLoading] = useState(false);
-    const handleButtonClick: FormEventHandler<HTMLFormElement> = async (event) => {
+    const [isClicked, setIsClicked] = useState(false);
+
+    const handleButtonClick: FormEventHandler<HTMLFormElement> = (
+        event
+    ) => {
         event.preventDefault();
-        dispatch(setLoadingSearchingPaths(true)); // Start loading state
-        setButtonLoading(true); // Set loading to true immediately
-    
+        dispatch(setLoadingSearchingPaths(true)); 
+        setButtonLoading(true); 
+
         try {
             dispatch(resetPaths());
             dispatch(setSelectedPathIndex(null));
             const pathManager = new PathManager();
             pathManager.clearKeys();
-            dispatch(setPaths())
-            
+            dispatch(setPaths());
         } catch (error) {
             console.error('Error searching paths:', error);
         } finally {
-            setTimeout(() => {
-                setButtonLoading(false);
-            }, 3000);
-           
-            // Set loading to false after completion
-
+            setButtonLoading(false);
         }
     };
-    
+
     return (
-        <div className="relative">
-            <div className="p-4">
+        <div className="relative bg-[#b6b4b2]">
+            <div className="py-4">
                 <label
                     htmlFor="price"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-normal leading-6 text-gray-900 px-4 uppercase"
                 >
                     Search for the key
                 </label>
 
                 <form onSubmit={handleButtonClick}>
-                    <div className="flex w-full justify-between gap-2">
+                    
                         <div className="w-full">
-                            <div className="mt-2 rounded-md shadow-sm">
+                            <div className="rounded-md shadow-sm">
                                 <ComboBox />
                             </div>
                         </div>
-
-                        <button
-                            type="submit"
-                            className="px-3 py-1 mt-2 bg-teal-500 text-white border border-teal-500 rounded-md hover:bg-teal-600 focus:outline-none"
-                        >
-                            {buttonLoading ? '...' : 'Continue'}
-                        </button>
-                    </div>
-                </form>
-
-                <div className="flex justify-between">
-                    <div className="text-xs mt-2">
-                        Found items
-                    </div>
-                    <div className="text-xs mt-2">
+                        <div className='w-full flex justify-end mt-4 px-4'>
+                        <div className="flex justify-between w-full">
+                    <div className="text-xs mt-2 uppercase">
                         Double click on path to copy to clipboard
                     </div>
                 </div>
+                        <div className="p-[2px] bg-black">
+                            <button
+                                type="submit"
+                                className={`find-button-shadow text-white pl-1 py-1 w-[90px] z-10 h-[30px] bg-[#1c1c1c] text-[10px] rounded-md focus:outline-none ${isClicked ? 'no-shadow' : ''}`}
+                                onClick={()=>{
+                                    console.log("clicked find")
+                                    setIsClicked(true);
+                                    setTimeout(() => {
+                                        setIsClicked(false);
+                                    }, 100);
+                                }}
+                            >
+                                FIND
+                            </button>
+                            </div>
+                        </div>
+                </form>
+
+                
             </div>
         </div>
     );

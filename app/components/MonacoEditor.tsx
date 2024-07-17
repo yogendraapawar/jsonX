@@ -54,13 +54,13 @@ export default function MonacoEditor() {
   return (
     <>
     <JsonFormatMenu/>
-    <div className="h-full w-full border">
-      
+    <div className="h-full w-full border bg-[#b6b4b2] px-8 py-4 overflow-hidden">
       <Editor
+      className='input-box-shadow'
         height={'100%'}
         width={'100%'}
         value={code}
-        theme="vs"
+        theme="vs-dark"
         defaultLanguage="json"
         defaultValue="// some comment"
         beforeMount={handleEditorWillMount}

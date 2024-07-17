@@ -8,12 +8,12 @@ function SelectedPathView() {
         (state: RootState) => state.codeReducer.selectedPathKeyValue
     );
   return (
-    <div className="w-full h-full overflow-auto p-2">
+    <div className="w-full h-full overflow-hidden p-4 bg-[#b6b4b2]">
         <Editor
         height={'100%'}
         width={'100%'}
         value={selectedPathKeyValue}
-        theme="vs"
+        theme="vs-dark"
         defaultLanguage="json|text"
         defaultValue="// some comment"
         options={{ minimap: { enabled: false }, formatOnPaste:true, formatOnType:true,  padding:{top:20, bottom:20} }}

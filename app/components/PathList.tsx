@@ -67,29 +67,23 @@ function PathList() {
 
   
   return (
-    <div>
+    <div className='relative input-inner-shadow bg-black h-full overflow-auto  input-box-shadow w-full'>
+      <div className="absolute left-0 bg-[#454547] h-full z-10 w-[10px] "></div>
+      <div className="absolute right-0 bg-[#29292c] h-full z-10 w-[10px]"></div>
       {paths.length === 0 ? (
-        <div className="text-sm ">
-          Enter the key you want to find
+  <div className="absolute inset-0 flex items-center justify-center text-sm text-[#54a9d8] uppercase">
+          Key Please
         </div>
       ) : (
-        <ul className="flex flex-col gap-2 cursor-pointer">
+        <ul className="flex px-4 flex-col gap-2 cursor-pointer">
           {paths.map((key, index) => (
             <li
               key={index}
-              className={`px-4 py-2 text-sm border rounded-md  ${selectedPathIndex===index?'bg-indigo-500 text-white':null}`}
+              className={` py-2 text-sm rounded-md  ${selectedPathIndex===index?'text-[#FF3C00]':'text-white'}`}
               onClick={(event) => handlePathClick( index)}
               onDoubleClick={(event) => handleDoubleClick( index)}
             >
               <div>{processResultSeperately(key)}</div>
-              {/* <div>
-                {typeof key[key.length - 1] === 'object' ? (
-                  <span>{JSON.stringify(key[key.length - 1])}</span>
-                ) : (
-                  //@ts-ignore
-                  <span>{key[key.length - 1]}</span>
-                )}{' '}
-              </div> */}
             </li>
           ))}
         </ul>

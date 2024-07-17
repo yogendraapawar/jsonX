@@ -4,18 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
 import downloadIcon from '@/public/icons/toolbarIcons/downloadIcon.svg'
 import { RootState } from '@/redux/store';
+import CircularButton from './CircularButton';
+import Button from '@/app/components/Button';
 
 function FetchLinkFromURL() {
     const [url, setUrl] = useState<string>('');
-    const isVisible=useSelector((state:RootState)=>state.visibilityStatusSlice.fetchJsonFromUrl)
+    // const isVisible=useSelector((state:RootState)=>state.visibilityStatusSlice.fetchJsonFromUrl)
     const dispatch = useDispatch();
 
     function handleUrlInputChange(event: ChangeEvent<HTMLInputElement>): void {
         setUrl(event.target.value);
     }
 
-    async function handleUrlSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
-        event.preventDefault(); // Prevent default form submission
+    async function handleUrlSubmit(): Promise<void> {
         if (url.trim() === '') {
             return; // Handle empty URL input case if needed
         }
@@ -31,27 +32,24 @@ function FetchLinkFromURL() {
     }
 
     return (
-        isVisible &&
+        
         <form onSubmit={handleUrlSubmit} className="w-full"> 
         <div className="flex w-full justify-between items-center gap-2">
             {/* Correct placement of form tag */}
-                <div className="rounded-md shadow-sm w-full">
+                <div className="relative  shadow-sm w-full">
+                <div className="absolute left-0 bg-[#454547] h-full z-10 w-[10px] "></div>
+                <div className="absolute right-0 bg-[#29292c] h-full z-10 w-[10px]"></div>
                     <input
                         type="text"
                         name="url"
                         id="url"
-                        className="block w-full rounded-md border-0 py-1 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="text-white w-full rounded-md border-0 py-3 pl-4 pr-4 focus:outline-none input-box-shadow bg-black sm:text-sm sm:leading-6"
                         placeholder="Enter URL..."
                         value={url}
                         onChange={handleUrlInputChange}
                     />
                 </div>
-                <button
-                    type="submit"
-                    className=" px-3 py-1 text-white hover:bg-teal-600 focus:outline-none"
-                >
-                    <Image src={downloadIcon} alt='' height={30}/>
-                </button>
+                <Button onclick={handleUrlSubmit} text={"FETCH"} icon={downloadIcon} color={"#b3b1b0"}/>
             
         </div>
         </form>

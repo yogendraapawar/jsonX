@@ -7,9 +7,9 @@ function LoadingPage() {
     const showLoadingPage=useSelector((state:RootState)=>state.visibilityStatusSlice.showLoadingPage)
   return (
     showLoadingPage&&
-    <div className='absolute w-full h-full z-50 '>
+    <div className='absolute w-full h-full z-50 bg-opacity-60 backdrop-blur-sm'>
         <div className='flex w-full h-full items-center justify-center'>
-        {loadingPageMessage}
+          {loadingPageMessage}
         </div>
     </div>
   )
