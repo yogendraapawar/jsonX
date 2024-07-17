@@ -43,7 +43,7 @@ function FetchLinkFromURL() {
                         type="text"
                         name="url"
                         id="url"
-                        className="text-white w-full rounded-md border-0 py-3 pl-4 pr-4 focus:outline-none input-box-shadow bg-black sm:text-sm sm:leading-6"
+                        className="text-white w-full rounded-md py-3 pl-4 pr-4 focus:outline-none input-box-shadow bg-black sm:text-sm sm:leading-6 input-inner-shadow"
                         placeholder="Enter URL..."
                         value={url}
                         onChange={handleUrlInputChange}

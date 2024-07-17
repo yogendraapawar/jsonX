@@ -31,7 +31,7 @@ export default function RootLayout({
           <div className="relative flex flex-col h-screen">
           <Toast/>
             <div>
-              <Header />
+              {/* <Header /> */}
             </div>
             <div className="flex-1 bg-green overflow-y-auto">{children}</div>
           </div>

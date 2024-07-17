@@ -45,3 +45,19 @@
   background: rgb(61,61,61);
 background: linear-gradient(149deg, rgba(61,61,61,0.9646709025407038) 10%, rgba(0,0,0,0.9646709025407038) 52%, rgba(0,0,0,1) 92%);
 }
+
+.main-container-left-top-shadow{
+    box-shadow: 
+        inset 3px 3px 1px 0px rgb(241, 240, 237, 0.2)
+}
+
+.main-container-left-shadow{
+  box-shadow: 
+      inset 1.5px 0px 0px 0px rgba(0, 0, 0, 1)
+}
+
+.outer-shadow{
+  box-shadow: 
+  5px 5px 10px 0px rgba(0, 0, 0, 0.4);
+
+}

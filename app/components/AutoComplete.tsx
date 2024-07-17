@@ -94,7 +94,7 @@ function ComboBox() {
             </div>
             {!hideSuggestions && (
                 <div
-                    className="absolute z-50 w-full max-h-72 p-1 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto"
+                    className="absolute z-50 w-full max-h-72 p-1 bg-white  rounded-lg overflow-hidden overflow-y-auto"
                     onMouseEnter={() => setMouseOverSuggestions(true)}
                     onMouseLeave={() => setMouseOverSuggestions(false)}
                 >

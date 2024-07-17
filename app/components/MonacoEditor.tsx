@@ -54,7 +54,7 @@ export default function MonacoEditor() {
   return (
     <>
     <JsonFormatMenu/>
-    <div className="h-full w-full border bg-[#b6b4b2] px-8 py-4 overflow-hidden">
+    <div className="h-full w-full px-8 pt-1 pb-4 overflow-hidden">
       <Editor
       className='input-box-shadow'
         height={'100%'}

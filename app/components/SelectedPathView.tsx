@@ -8,7 +8,7 @@ function SelectedPathView() {
         (state: RootState) => state.codeReducer.selectedPathKeyValue
     );
   return (
-    <div className="w-full h-full overflow-hidden p-4 bg-[#b6b4b2]">
+    <div className="w-full h-full overflow-hidden p-4 ">
         <Editor
         height={'100%'}
         width={'100%'}

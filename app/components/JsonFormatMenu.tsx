@@ -58,6 +58,7 @@ function JsonFormatMenu() {
             const input = event.target;
 
             if (!input || !input.files || input.files.length === 0) {
+                dispatch(setShowLoadingPage(false))
                 return;
             }
 
@@ -87,8 +88,17 @@ function JsonFormatMenu() {
 
             reader.readAsText(file);
         };
+
+        const onCloseFileInput = () => {
+            // Cleanup if user cancels file selection
+            dispatch(setShowLoadingPage(false));
+            dispatch(setLoadingPageMessage('Loading...'));
+        };
+
         // @ts-ignore
         fileInput.addEventListener('change', onChange);
+        fileInput.addEventListener('cancel', onCloseFileInput); // Assuming 'cancel' event
+
         fileInput.click(); // Simulate click to trigger file selection
 
         console.log('import clicked');
@@ -100,7 +110,7 @@ function JsonFormatMenu() {
     }
 
     return (
-        <div className="flex justify-end w-full items-center py-2 bg-[#b6b4b2] pr-4">
+        <div className="flex justify-end w-full items-center py-2 pr-4">
             <FetchLinkFromURL />
             <div className="flex justify-end gap-4 items-center py-2 pl-4">
                 <Button

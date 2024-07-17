@@ -36,7 +36,7 @@ function SearchKey() {
     };
 
     return (
-        <div className="relative bg-[#b6b4b2]">
+        <div className="relative">
             <div className="py-4">
                 <label
                     htmlFor="price"
