@@ -4,7 +4,7 @@ import { FormEvent, useState } from "react";
 
 type ButtonProps = {
     text: string;
-    onclick: () => void | ((event: FormEvent<HTMLFormElement>) => Promise<void>);
+    onclick: () => any
     icon: StaticImageData;
     color:string
 };

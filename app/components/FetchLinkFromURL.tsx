@@ -49,6 +49,7 @@ function FetchLinkFromURL() {
                         onChange={handleUrlInputChange}
                     />
                 </div>
+                {/* @ts/ignore */}
                 <Button onclick={handleUrlSubmit} text={"FETCH"} icon={downloadIcon} color={"#b3b1b0"}/>
             
         </div>
