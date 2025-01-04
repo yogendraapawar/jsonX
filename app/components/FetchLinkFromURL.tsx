@@ -2,24 +2,26 @@ import { fetchJsonFromURL } from '@/redux/features/codeSlice';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Image from 'next/image';
-import downloadIcon from '@/public/icons/toolbarIcons/downloadIcon.svg'
+import downloadIcon from '@/public/icons/toolbarIcons/downloadIcon.svg';
 import { RootState } from '@/redux/store';
+import { OutLinedButton } from './OutLinedButton';
 
 function FetchLinkFromURL() {
     const [url, setUrl] = useState<string>('');
-    const isVisible=useSelector((state:RootState)=>state.visibilityStatusSlice.fetchJsonFromUrl)
     const dispatch = useDispatch();
 
     function handleUrlInputChange(event: ChangeEvent<HTMLInputElement>): void {
         setUrl(event.target.value);
     }
 
-    async function handleUrlSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
+    async function handleUrlSubmit(
+        event: FormEvent<HTMLFormElement>
+    ): Promise<void> {
         event.preventDefault(); // Prevent default form submission
         if (url.trim() === '') {
             return; // Handle empty URL input case if needed
         }
-        
+
         try {
             // Dispatch your async action here
             // @ts-ignore
@@ -31,29 +33,26 @@ function FetchLinkFromURL() {
     }
 
     return (
-        isVisible &&
-        <form onSubmit={handleUrlSubmit} className="w-full"> 
-        <div className="flex w-full justify-between items-center gap-2">
-            {/* Correct placement of form tag */}
+        <form onSubmit={handleUrlSubmit} className="w-full">
+            <div className="flex w-full justify-between items-center gap-2">
+                {/* Correct placement of form tag */}
                 <div className="rounded-md shadow-sm w-full">
                     <input
                         type="text"
                         name="url"
                         id="url"
-                        className="block w-full rounded-md border-0 py-1 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block border w-full rounded-md py-1 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus:outline-none "
                         placeholder="Enter URL..."
                         value={url}
                         onChange={handleUrlInputChange}
                     />
                 </div>
-                <button
-                    type="submit"
-                    className=" px-3 py-1 text-white hover:bg-teal-600 focus:outline-none"
-                >
-                    <Image src={downloadIcon} alt='' height={30}/>
-                </button>
-            
-        </div>
+                <OutLinedButton
+                    text={'Download'}
+                    onclick={handleUrlSubmit}
+                    icon={null}
+                />
+            </div>
         </form>
     );
 }

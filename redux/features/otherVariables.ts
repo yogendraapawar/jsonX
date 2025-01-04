@@ -1,9 +1,17 @@
 // slices/toastSlice.js
 
 import { createSlice } from '@reduxjs/toolkit';
-const initialState = {
+
+type INITIALSTATE={
+  keySearchValue:string,
+  loadingPageMessage:string,
+  darkMode:boolean
+}
+
+const initialState:INITIALSTATE = {
   keySearchValue:'',
-  loadingPageMessage:'Loading...'
+  loadingPageMessage:'Loading...',
+  darkMode:true
 };
 
 const otherVariablesSlice = createSlice({
@@ -21,9 +29,13 @@ const otherVariablesSlice = createSlice({
   },
   resetLoadingPageMessage:(state, action)=>{
     state.loadingPageMessage=state.loadingPageMessage
+  },
+  setDarkMode:(state, action)=>{
+    console.log("setting state", action.payload)
+    state.darkMode=action.payload
 },
   },
 });
 
-export const {setKeySearchValue, clearSetKeySearchValue, setLoadingPageMessage, resetLoadingPageMessage} = otherVariablesSlice.actions;
+export const {setKeySearchValue, clearSetKeySearchValue, setLoadingPageMessage, resetLoadingPageMessage, setDarkMode} = otherVariablesSlice.actions;
 export default otherVariablesSlice.reducer;

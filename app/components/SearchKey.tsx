@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useState } from 'react'; // Import useState if needed
+import React, { FormEventHandler, useState } from 'react';
 import ComboBox from './AutoComplete';
 import { resetPaths, setPaths } from '@/redux/features/codeSlice';
 import { setSelectedPathIndex } from '@/redux/features/codeSlice';
@@ -12,61 +12,58 @@ function SearchKey() {
     const loadingSearchingPaths = useSelector(
         (state: RootState) => state.visibilityStatusSlice.loadingSearchingPaths
     );
+    const paths = useSelector(
+        (state: RootState) => state.codeReducer.paths
+    ) as (string | number | object)[][];
     const [buttonLoading, setButtonLoading] = useState(false);
-    const handleButtonClick: FormEventHandler<HTMLFormElement> = async (event) => {
+
+    const handleButtonClick: FormEventHandler<HTMLFormElement> = async (
+        event
+    ) => {
         event.preventDefault();
-        dispatch(setLoadingSearchingPaths(true)); // Start loading state
-        setButtonLoading(true); // Set loading to true immediately
-    
+        setButtonLoading(true);
+        dispatch(setLoadingSearchingPaths(true));
+
         try {
             dispatch(resetPaths());
             dispatch(setSelectedPathIndex(null));
             const pathManager = new PathManager();
             pathManager.clearKeys();
-            dispatch(setPaths())
-            
+            setTimeout(() => {
+                dispatch(setPaths());
+                setButtonLoading(false); // Stop button loading after completion
+                dispatch(setLoadingSearchingPaths(false)); // Stop loading state
+            }, 1000);
         } catch (error) {
             console.error('Error searching paths:', error);
-        } finally {
-            setTimeout(() => {
-                setButtonLoading(false);
-            }, 3000);
-           
-            // Set loading to false after completion
-
+            setButtonLoading(false); // Stop button loading on error
+            dispatch(setLoadingSearchingPaths(false)); // Stop loading state on error
         }
     };
-    
+
     return (
         <div className="relative">
-            <div className="p-4">
+            <div className="">
                 <label
                     htmlFor="price"
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-xs font-medium leading-6 uppercase"
                 >
                     Search for the key
                 </label>
 
                 <form onSubmit={handleButtonClick}>
                     <div className="flex w-full justify-between gap-2">
-                        <div className="w-full">
-                            <div className="mt-2 rounded-md shadow-sm">
-                                <ComboBox />
-                            </div>
-                        </div>
-
-                        <button
-                            type="submit"
-                            className="px-3 py-1 mt-2 bg-teal-500 text-white border border-teal-500 rounded-md hover:bg-teal-600 focus:outline-none"
-                        >
-                            {buttonLoading ? '...' : 'Continue'}
-                        </button>
+                        <ComboBox />
+                        <Button
+                            onClick={handleButtonClick}
+                            load={buttonLoading}
+                        />
                     </div>
                 </form>
 
-                <div className="flex justify-between">
+                <div className="flex justify-between mb-2">
                     <div className="text-xs mt-2">
-                        Found items
+                        Found items {paths?.length ?? 0}
                     </div>
                     <div className="text-xs mt-2">
                         Double click on path to copy to clipboard
@@ -74,6 +71,18 @@ function SearchKey() {
                 </div>
             </div>
         </div>
+    );
+}
+
+function Button({ load, onClick }: { load: boolean; onClick: () => void }) {
+    return (
+        <button
+            onClick={onClick}
+            className="px-3 h-full py-0.5 bg-blue-500 text-white border-blue-400 rounded-md hover:bg-blue-400 focus:outline-none"
+            disabled={load} // Disable the button when loading
+        >
+            {load ? 'Loading...' : 'Search'}
+        </button>
     );
 }
 

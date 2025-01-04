@@ -9,8 +9,8 @@ type CodeState = {
   selectedPathIndex:number,
   keys: string[];
   paths: (string | number | object)[][];
-  searchKeyValue:string
-
+  searchKeyValue:string;
+  stringifiedCode:string
 
 
 };
@@ -21,7 +21,8 @@ const initialState: CodeState = {
   selectedPathIndex:0,
   keys: [],
   paths:[],
-  searchKeyValue:''
+  searchKeyValue:'',
+  stringifiedCode:''
 
   
 };
@@ -60,9 +61,17 @@ export const codeSlice = createSlice({
           throw new Error(error.message)
         }
 
+      },
+      stringifyCode:(state,action)=>{
+        try{
+        const formattedJsonString = JSON.stringify(state.code); // 2 spaces for indentation
+        state.selectedPathKeyValue=formattedJsonString
+
+        }catch(error:any){
+          throw new Error(error.message)
+        }
+
       }
-      
-      
       ,
       setSelectedPathKeyValue:(state, action)=>{
         const arr = action.payload["pathArray"];
@@ -133,7 +142,7 @@ export const codeSlice = createSlice({
   },
 );
 
-export const { setCode, parseCode, formatCode, setSelectedPathKeyValue, setSelectedPathIndex, setKeys, resetKeys, setPaths, resetPaths, setSearchKeyValue } = codeSlice.actions;
+export const { setCode, parseCode, formatCode, setSelectedPathKeyValue, setSelectedPathIndex, setKeys, resetKeys, setPaths, resetPaths, setSearchKeyValue, stringifyCode } = codeSlice.actions;
 
 
 export const fetchJsonFromURL = createAsyncThunk(

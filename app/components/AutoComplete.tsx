@@ -5,14 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 function ComboBox() {
     const data = useSelector((state: RootState) => state.codeReducer.keys);
-    const code = useSelector((state: RootState) => state.codeReducer.code);
-    const dispatch=useDispatch<AppDispatch>();
+    const dispatch = useDispatch<AppDispatch>();
     const [keySuggestion, setKeySuggestion] = useState<string[]>([]);
     const [inputValue, setInputValue] = useState<string>('');
     const [hideSuggestions, setHideSuggestions] = useState<boolean>(true);
-    const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
-    const [mouseOverSuggestions, setMouseOverSuggestions] = useState<boolean>(false);
-
+    const [mouseOverSuggestions, setMouseOverSuggestions] =
+        useState<boolean>(false);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -24,13 +22,15 @@ function ComboBox() {
         return () => clearTimeout(timer);
     }, [mouseOverSuggestions]);
 
-    function handleAutoCompleteChange(event: ChangeEvent<HTMLInputElement>): void {
+    function handleAutoCompleteChange(
+        event: ChangeEvent<HTMLInputElement>
+    ): void {
         let searchInput = event.target.value.toLowerCase().trim();
 
         if (searchInput === '') {
             setKeySuggestion([]);
             setInputValue('');
-            dispatch(setSearchKeyValue(''))
+            dispatch(setSearchKeyValue(''));
             setHideSuggestions(true);
             return;
         }
@@ -49,14 +49,13 @@ function ComboBox() {
         }
 
         setInputValue(event.target.value);
-        dispatch(setSearchKeyValue(event.target.value))
+        dispatch(setSearchKeyValue(event.target.value));
     }
 
     function handleSuggestionClick(index: number) {
         setHideSuggestions(true);
         setInputValue(keySuggestion[index]);
-        dispatch(setSearchKeyValue(keySuggestion[index]))
-
+        dispatch(setSearchKeyValue(keySuggestion[index]));
     }
 
     function handleInputBlur() {
@@ -68,45 +67,26 @@ function ComboBox() {
     }
 
     return (
-        <div className="relative" data-hs-combo-box="">
-            <div className="relative">
-                <input
-                    className="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50"
-                    type="text"
-                    id='keySearchInput'
-                    data-hs-combo-box-input=""
-                    value={inputValue}
-                    onChange={handleAutoCompleteChange}
-                    onBlur={handleInputBlur}
-                    onFocus={() => {
-                        setHideSuggestions(false);
-                        setIsInputFocused(true);
-                    }}
-                />
-                <div
-                    className="absolute top-1/2 end-3 -translate-y-1/2"
-                    data-hs-combo-box-toggle=""
-                >
-                    <svg
-                        className="flex-shrink-0 size-3.5 text-gray-500"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                    >
-                        <path d="m7 15 5 5 5-5"></path>
-                        <path d="m7 9 5-5 5 5"></path>
-                    </svg>
-                </div>
-            </div>
+        <div className="relative w-full h-full">
+            <input
+                className="py-1 px-4 h-full block w-full border-2 rounded-lg text-sm focus:outline-none disabled:opacity-50"
+                type="text"
+                id="keySearchInput"
+                data-hs-combo-box-input=""
+                value={inputValue}
+                onChange={handleAutoCompleteChange}
+                onBlur={handleInputBlur}
+                onFocus={() => {
+                    setHideSuggestions(false);
+                }}
+                autoComplete="off"
+            />
             {!hideSuggestions && (
                 <div
-                    className="absolute z-50 w-full max-h-72 p-1 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto"
+                    className="absolute z-50 w-full p-1 bg-white border border-gray-200 rounded-lg overflow-hidden overflow-y-auto"
+                    style={{
+                        maxHeight: keySuggestion.length == 0 ? '0px' : '200px',
+                    }}
                     onMouseEnter={() => setMouseOverSuggestions(true)}
                     onMouseLeave={() => setMouseOverSuggestions(false)}
                 >
@@ -114,7 +94,7 @@ function ComboBox() {
                         keySuggestion.map((value, index) => (
                             <div
                                 key={index}
-                                className="cursor-pointer py-2 px-4 w-full text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100"
+                                className="cursor-pointer py-1 px-4 w-full text-sm text-gray-800 hover:bg-gray-100 rounded-lg focus:outline-none focus:bg-gray-100"
                                 data-hs-combo-box-output-item=""
                                 onClick={() => handleSuggestionClick(index)}
                             >
