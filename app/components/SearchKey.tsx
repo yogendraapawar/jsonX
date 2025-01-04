@@ -74,7 +74,7 @@ function SearchKey() {
     );
 }
 
-function Button({ load, onClick }: { load: boolean; onClick: () => void }) {
+function Button({ load, onClick }: { load: boolean; onClick: any }) {
     return (
         <button
             onClick={onClick}
