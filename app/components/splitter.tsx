@@ -9,9 +9,10 @@ const HorizontalSplitter = () => {
         setIsDragging(true);
     };
 
-    const handleMouseMove = (e) => {
+    const handleMouseMove = (e: any) => {
         if (!isDragging) return;
-        const containerWidth = containerRef.current.offsetWidth;
+        // @ts-ignore
+        const containerWidth = containerRef?.current?.offsetWidth;
         const newLeftWidth = (e.clientX / containerWidth) * 100;
         setLeftWidth(`${newLeftWidth}%`);
     };
