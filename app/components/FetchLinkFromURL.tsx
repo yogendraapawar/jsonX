@@ -48,7 +48,7 @@ function FetchLinkFromURL() {
                     />
                 </div>
                 <OutLinedButton
-                    text={'Download'}
+                    text={'Load'}
                     onclick={handleUrlSubmit}
                     icon={null}
                 />
