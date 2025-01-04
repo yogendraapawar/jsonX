@@ -1,10 +1,10 @@
 import { StaticImageData } from 'next/image';
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { text } from 'stream/consumers';
 
 type ButtonProps = {
     text: string | null;
-    onclick: () => void;
+    onclick: any;
     icon: StaticImageData | null;
 };
 
