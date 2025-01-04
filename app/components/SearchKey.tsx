@@ -63,7 +63,7 @@ function SearchKey() {
 
                 <div className="flex justify-between mb-2">
                     <div className="text-xs mt-2">
-                        Found items {paths?.length ?? 0}
+                        Found {paths?.length ?? 0} items
                     </div>
                     <div className="text-xs mt-2">
                         Double click on path to copy to clipboard
