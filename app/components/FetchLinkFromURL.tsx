@@ -17,18 +17,16 @@ function FetchLinkFromURL() {
     async function handleUrlSubmit(
         event: FormEvent<HTMLFormElement>
     ): Promise<void> {
-        event.preventDefault(); // Prevent default form submission
+        event.preventDefault();
         if (url.trim() === '') {
-            return; // Handle empty URL input case if needed
+            return;
         }
 
         try {
-            // Dispatch your async action here
             // @ts-ignore
             await dispatch(fetchJsonFromURL(url));
         } catch (error) {
             console.error('Error fetching JSON:', error);
-            // Handle error if needed
         }
     }
 

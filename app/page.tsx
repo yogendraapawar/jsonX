@@ -1,6 +1,4 @@
 'use client';
-import Image from 'next/image';
-import MonacoEditor from './components/MonacoEditor';
 
 export default function Home() {
     return (

@@ -3,7 +3,6 @@ import { AppDispatch, RootState } from '@/redux/store';
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { processResultSeperately } from '../helpers/findKeys';
-import path from 'path';
 import { hideToast, showToast } from '@/redux/features/toastSlice';
 import {
     setSelectedPathIndex,
@@ -52,27 +51,6 @@ function PathList() {
         },
         [dispatch, paths]
     );
-
-    // function handleDoubleClick(
-    //   event: React.MouseEvent<Element, MouseEvent>,
-    //   index: number
-    // ): void {
-    //   let textToCopy = processResultSeperately(paths[index]);
-
-    //   navigator.clipboard
-    //     .writeText(textToCopy)
-    //     .then(() => {
-    //       console.log('Text copied to clipboard:', textToCopy);
-    //       dispatch(showToast('Copied path to clipboard'));
-    //       setTimeout(() => {
-    //         dispatch(hideToast(null));
-    //       }, 1000);
-    //     })
-    //     .catch((err) => {
-    //       console.error('Failed to copy text to clipboard:', err);
-    //       // Handle error if clipboard write fails
-    //     });
-    // }
 
     return (
         <>

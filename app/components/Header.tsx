@@ -13,7 +13,7 @@ import ThemeSwitcher from '../utils/ThemeSwitcher';
 
 function Header() {
     return (
-        <div className="flex w-full justify-between px-4 py-4 align-center bg-blue-500">
+        <div className="flex w-full justify-between px-4 py-1 align-center bg-blue-500">
             <div className="flex gap-2">
                 <div>
                     <Image src={jsonIcon} height={40} alt="github-logo" />

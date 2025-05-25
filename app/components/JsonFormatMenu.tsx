@@ -1,5 +1,6 @@
 import {
     formatCode,
+    minifyCode,
     parseCode,
     setCode,
     stringifyCode,
@@ -62,6 +63,19 @@ function JsonFormatMenu() {
         }
 
         console.log('format clicked');
+    }
+
+    function handleMinifyClick(): void {
+        try {
+            dispatch(minifyCode(null));
+        } catch (error: any) {
+            dispatch(showToast(error.message));
+            setTimeout(() => {
+                dispatch(hideToast(null));
+            }, 1000);
+        }
+
+        console.log('minify clicked');
     }
 
     function handleImportClick(): void {
@@ -128,9 +142,7 @@ function JsonFormatMenu() {
 
     return (
         <div className="flex w-full items-center mb-2 dark:text-white">
-            <FetchLinkFromURL />
-            <div className="h-full w-[1px] border border-1 ml-4"></div>
-            <div className="flex justify-end pl-4 gap-4 items-center">
+            <div className="flex justify-end gap-4 items-center">
                 <Button
                     text="Parse"
                     onclick={handleParseClick}
@@ -146,6 +158,10 @@ function JsonFormatMenu() {
                     onclick={handleStringifyClick}
                     icon={stringifyIcon}
                 />
+                <Button
+                text='Minify'  
+                onclick={handleMinifyClick}
+                icon={webIcon}/>
                 <Button
                     text="Import"
                     onclick={handleImportClick}
@@ -177,7 +193,7 @@ export function Button(props: ButtonProps) {
             onClick={props.onclick}
             className="flex flex-col items-center cursor-pointer gap-1 rounded-md w-20 px-1 py-1 bg-blue-500 dark:bg-blue-500 shadow-md"
         >
-            <div className="text-[11px] font-medium uppercase text-white">
+            <div className="text-[10px] font-medium uppercase text-white">
                 {props.text}
             </div>
         </div>

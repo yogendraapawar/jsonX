@@ -1,17 +1,15 @@
 import type { Metadata } from 'next';
-import { Atkinson_Hyperlegible, Inter, Roboto } from 'next/font/google';
+import { Atkinson_Hyperlegible, Roboto } from 'next/font/google';
 import './globals.css';
 import ReduxProvider from '@/redux/ReduxProvider';
 import Header from './components/Header';
 import Toast from './components/Toast';
-import LoadingPage from './components/LoadingPage';
+import { Analytics } from "@vercel/analytics/next"
 import ThemeProvider from './utils/ThemeProvider';
-import ThemeSwitcher from './utils/ThemeSwitcher';
-const inter = Roboto({ weight: ['400'], subsets: ['latin'] });
 const atkinson = Atkinson_Hyperlegible({
     weight: ['400'],
-    subsets: ['latin'], // Add the desired subset(s) here
-    preload: true, // This ensures the font is preloaded
+    subsets: ['latin'],
+    preload: true,
 });
 export const metadata: Metadata = {
     title: 'JSONX - JSON Utility Tool',
@@ -27,6 +25,9 @@ export default function RootLayout({
     return (
         <ReduxProvider>
             <html lang="en">
+                <head>
+                    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9532409450964821" crossOrigin='anonymous'></script>
+                </head>
                 <body className={atkinson.className}>
                     <ThemeProvider
                         attribute="class"
@@ -42,6 +43,7 @@ export default function RootLayout({
                                 {children}
                             </div>
                         </div>
+                        <Analytics />
                     </ThemeProvider>
                 </body>
             </html>

@@ -4,27 +4,27 @@ import { stat } from "fs";
 
 
 type CodeState = {
-  code:string,
-  selectedPathKeyValue:string,
-  selectedPathIndex:number,
+  code: string,
+  selectedPathKeyValue: string,
+  selectedPathIndex: number,
   keys: string[];
   paths: (string | number | object)[][];
-  searchKeyValue:string;
-  stringifiedCode:string
+  searchKeyValue: string;
+  stringifiedCode: string
 
 
 };
 
 const initialState: CodeState = {
-  code:`{"tool":"jsonx", "creator":"yogendra"}`,
-  selectedPathKeyValue:"No path has been selected",
-  selectedPathIndex:0,
+  code: `{"tool":"jsonx", "creator":"jsonX"}`,
+  selectedPathKeyValue: "No path has been selected",
+  selectedPathIndex: 0,
   keys: [],
-  paths:[],
-  searchKeyValue:'',
-  stringifiedCode:''
+  paths: [],
+  searchKeyValue: '',
+  stringifiedCode: ''
 
-  
+
 };
 
 export const codeSlice = createSlice({
@@ -32,117 +32,124 @@ export const codeSlice = createSlice({
   initialState,
   reducers: {
     setCode: (state, action) => {
-      state.code=action.payload
+      state.code = action.payload
     },
-    parseCode:(state, action)=>{
-      let parsedCode=null
+    parseCode: (state, action) => {
+      let parsedCode = null
       console.log(typeof state.code)
-      try{
+      try {
 
-        parsedCode=JSON.parse(state.code)  
+        parsedCode = JSON.parse(state.code)
 
-      }catch(error:any){
+      } catch (error: any) {
         throw new Error(error.message)
       }
-      if (parsedCode!=null){
-        if (typeof parsedCode!=='object'){
-          state.code=String(parsedCode)
-        console.log(parsedCode)
-        }
-        
-      }
- 
-      },
-      formatCode:(state,action)=>{
-        try{
-        const formattedJsonString = JSON.stringify(JSON.parse(state.code), null, 2); // 2 spaces for indentation
-        state.code=String(formattedJsonString)
-        }catch(error:any){
-          throw new Error(error.message)
-        }
-
-      },
-      stringifyCode:(state,action)=>{
-        try{
-        const formattedJsonString = JSON.stringify(state.code); // 2 spaces for indentation
-        state.selectedPathKeyValue=formattedJsonString
-
-        }catch(error:any){
-          throw new Error(error.message)
+      if (parsedCode != null) {
+        if (typeof parsedCode !== 'object') {
+          state.code = String(parsedCode)
+          console.log(parsedCode)
         }
 
       }
-      ,
-      setSelectedPathKeyValue:(state, action)=>{
-        const arr = action.payload["pathArray"];
-        console.log("arr",arr)
 
-        let tempVal = JSON.parse(action.payload["code"]);
-        
-        for (let i = 0; i < arr.length ; i++) {
-          console.log(typeof tempVal)
-          try{
-            tempVal=JSON.parse(tempVal)
-          }catch{
-            tempVal=tempVal
-          }
-          if (typeof arr[i] === 'string') {
-            tempVal = tempVal[arr[i]];
-          } else {
-            tempVal = tempVal[arr[i]];
-          }
-          
-          console.log("value", tempVal);
-        }
-        
-        let tempObj=tempVal;
-        
-        console.log(tempObj);
-        state.selectedPathKeyValue=JSON.stringify(tempObj)
-      },
-
-      setSelectedPathIndex:(state, action)=>{
-        state.selectedPathIndex=action.payload
-      },
-      setKeys: (state) => {
-        const pathManager=new PathManager()
-        pathManager.fetchKeys(JSON.parse(state.code));
-        state.keys=Array.from(pathManager.getKeys())
-      },
-      resetKeys: (state) => {
-        state.keys = initialState.keys;
-      },
-
-      setPaths: (state) => {
-        const pathManager=new PathManager()
-        let result =  pathManager.penetrateJson(
-                JSON.parse(state.code),
-                state.searchKeyValue
-            );
-            console.log('final_result', result);
-            state.paths=result
-      },
-      resetPaths: (state) => {
-        state.paths = initialState.paths; // Reset path to initial state
-      },
-
-      setSearchKeyValue:(state, action)=>{
-        state.searchKeyValue=action.payload
-      }
-    }, extraReducers:(builder)=>{
-        builder.addCase(fetchJsonFromURL.fulfilled, (state, action)=>{
-          state.code=String(JSON.stringify(action.payload))
-        }
-      )
     },
-    
-    
-    
-    
+    formatCode: (state, action) => {
+      try {
+        const formattedJsonString = JSON.stringify(JSON.parse(state.code), null, 2); // 2 spaces for indentation
+        state.code = String(formattedJsonString)
+      } catch (error: any) {
+        throw new Error(error.message)
+      }
+
+    },
+    stringifyCode: (state, action) => {
+      try {
+        const formattedJsonString = JSON.stringify(state.code); // 2 spaces for indentation
+        state.selectedPathKeyValue = formattedJsonString
+
+      } catch (error: any) {
+        throw new Error(error.message)
+      }
+
+    },
+    minifyCode: (state, action) => {
+      try {
+        const minifiedJsonString = JSON.stringify(JSON.parse(state.code)); // Minify JSON
+        state.selectedPathKeyValue = minifiedJsonString
+      } catch (error: any) {
+        throw new Error(error.message)
+      }
+    },
+    setSelectedPathKeyValue: (state, action) => {
+      const arr = action.payload["pathArray"];
+      console.log("arr", arr)
+
+      let tempVal = JSON.parse(action.payload["code"]);
+
+      for (let i = 0; i < arr.length; i++) {
+        console.log(typeof tempVal)
+        try {
+          tempVal = JSON.parse(tempVal)
+        } catch {
+          tempVal = tempVal
+        }
+        if (typeof arr[i] === 'string') {
+          tempVal = tempVal[arr[i]];
+        } else {
+          tempVal = tempVal[arr[i]];
+        }
+
+        console.log("value", tempVal);
+      }
+
+      let tempObj = tempVal;
+
+      console.log(tempObj);
+      state.selectedPathKeyValue = JSON.stringify(tempObj)
+    },
+
+    setSelectedPathIndex: (state, action) => {
+      state.selectedPathIndex = action.payload
+    },
+    setKeys: (state) => {
+      const pathManager = new PathManager()
+      pathManager.fetchKeys(JSON.parse(state.code));
+      state.keys = Array.from(pathManager.getKeys())
+    },
+    resetKeys: (state) => {
+      state.keys = initialState.keys;
+    },
+
+    setPaths: (state) => {
+      const pathManager = new PathManager()
+      let result = pathManager.penetrateJson(
+        JSON.parse(state.code),
+        state.searchKeyValue
+      );
+      console.log('final_result', result);
+      state.paths = result
+    },
+    resetPaths: (state) => {
+      state.paths = initialState.paths; // Reset path to initial state
+    },
+
+    setSearchKeyValue: (state, action) => {
+      state.searchKeyValue = action.payload
+    }
+  }, extraReducers: (builder) => {
+    builder.addCase(fetchJsonFromURL.fulfilled, (state, action) => {
+      state.code = String(JSON.stringify(action.payload))
+    }
+    )
   },
+
+
+
+
+},
 );
 
-export const { setCode, parseCode, formatCode, setSelectedPathKeyValue, setSelectedPathIndex, setKeys, resetKeys, setPaths, resetPaths, setSearchKeyValue, stringifyCode } = codeSlice.actions;
+export const { setCode, parseCode, formatCode, setSelectedPathKeyValue, setSelectedPathIndex, setKeys, resetKeys, setPaths, resetPaths, setSearchKeyValue, stringifyCode, minifyCode } = codeSlice.actions;
 
 
 export const fetchJsonFromURL = createAsyncThunk(
